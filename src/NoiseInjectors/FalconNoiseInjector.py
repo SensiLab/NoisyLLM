@@ -110,7 +110,18 @@ class FalconNoiseInjector(NoiseInjector):
 
     def __validate_config(self, config: dict) -> dict:
         """
-        TODO: verify and write doc string
+        Private method verfies the values of the config are valid.
+        Specifically, it verifies the validatity of the temperature,
+        top_p and key noise parameters.
+        @author: CLAUDE
+        @author: Tace McNamara
+        @modified: Stephen Krol
+        # TODO: Add validation for all arguments.
+
+        Args:
+            config (dict): config arguments for noise injection.
+        Returns:
+            dict: validated config dictionary.
         """
         
         # Validate temperature
