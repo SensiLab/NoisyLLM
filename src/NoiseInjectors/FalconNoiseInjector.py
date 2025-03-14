@@ -4,8 +4,6 @@ Script contains the FalconNoiseInjector class.
 This class injects noise into various layers
 of the Falcon LLM.
 @author: Stephen Krol
-@author: CLAUDE
-@author: Tace McNamara
 
 This file contains the following class:
     - FalconNoiseInjector
@@ -55,9 +53,9 @@ class FalconNoiseInjector(NoiseInjector):
         
         self.noise_config = self.__validate_config(noise_config)
 
-        # self.layer_noise_stats = {}  # Reset noise statistics
+        self.layer_noise_stats = {}  # Reset noise statistics
         
-        # input_ids, attention_mask = self.prepare_inputs(prompt)
+        input_ids, attention_mask = self.__prepare_inputs(prompt) # TODO: wtf is this
         # hooks = [] # TODO: wtf is a hook?
 
         # # Register hooks for each attention layer
@@ -142,6 +140,27 @@ class FalconNoiseInjector(NoiseInjector):
                 config[key] = 0.0
 
         return config 
+
+    def __prepare_inputs(self, prompt: str):
+        """
+        Private method for preparing model inputs.
+        Tokenizers input, sends them to the relevant
+        device and generates attention mask.
+        @author: CLAUDE
+        @author: Tace McNamara
+
+        Args:
+            prompt (str): Input prompt for LLM.
+        Returns:
+            torch.tensor: input tokens
+            torch.tensor: attention mask
+        """
+
+        inputs = self.tokenizer(prompt, return_tensors="pt")
+        input_ids = inputs.input_ids.to(self.device)
+        attention_mask = inputs.attention_mask.to(self.device)
+
+        return input_ids, attention_mask
 
 if __name__ == "__main__":
 
